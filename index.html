@@ -1,3 +1,40 @@
+<!--
+=============================================================
+    VIGNESHWARAN | PORTFOLIO
+=============================================================
+    HOW TO UPDATE THIS PORTFOLIO EACH SEMESTER
+    -------------------------------------------------------
+    1. EDUCATION TIMELINE  -> search "EDUCATION" below.
+       Replace a "Coming Soon" <h3> and its <p> with the real
+       semester milestone once it's complete.
+
+    2. SKILLS              -> search "SKILLS" below.
+       Add new <li> items inside the matching skill-card, or
+       duplicate a <article class="skill-card glass-card"> block
+       for a new category.
+
+    3. LEARNING PROGRESS   -> search "LEARNING PROGRESS" below.
+       Update the data-width="xx" value (0-100) on each
+       .progress-fill div as your proficiency improves.
+
+    4. PROJECTS            -> search "PROJECTS" below.
+       Duplicate a <article class="project-card glass-card">
+       block, change the tag/title/description, and replace
+       "Coming Soon" with "Live Project" + a link if you add one.
+
+    5. CERTIFICATES        -> search "CERTIFICATES" below.
+       Duplicate a <article class="certificate-card glass-card">
+       block and replace the icon, title and "Coming Soon" text.
+
+    6. JOURNEY / ACHIEVEMENTS / EXPERIENCE / GOALS
+       Follow the same duplicate-and-edit pattern used above —
+       every section uses the same repeating card structure.
+
+    TIP: Every section already has an empty template you can
+    copy-paste, so you never need to touch the CSS or JS to add
+    new content — just duplicate a card, edit the text, and save.
+=============================================================
+-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,6 +58,28 @@
     <meta name="author" content="Vigneshwaran">
 
     <meta name="theme-color" content="#050816">
+
+    <!-- =====================================================
+        FAVICON
+    ====================================================== -->
+
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+
+    <!-- =====================================================
+        OPEN GRAPH / SOCIAL PREVIEW
+    ====================================================== -->
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Vigneshwaran | AI & Data Science Portfolio">
+    <meta property="og:description"
+        content="Official portfolio of Vigneshwaran, a Future AI & Data Science Undergraduate from Rajalakshmi Engineering College.">
+    <meta property="og:image" content="assets/images/Profile.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Vigneshwaran | AI & Data Science Portfolio">
+    <meta name="twitter:description"
+        content="Official portfolio of Vigneshwaran, a Future AI & Data Science Undergraduate from Rajalakshmi Engineering College.">
+    <meta name="twitter:image" content="assets/images/Profile.png">
 
     <!-- =====================================================
         GOOGLE FONTS
@@ -121,7 +180,7 @@
 
             <!-- Navigation -->
 
-            <ul class="nav-links">
+            <ul class="nav-links" id="primaryNav">
 
                 <li><a href="#home">Home</a></li>
 
@@ -133,6 +192,8 @@
 
                 <li><a href="#projects">Projects</a></li>
 
+                <li><a href="#certificates">Certificates</a></li>
+
                 <li><a href="#journey">Journey</a></li>
 
                 <li><a href="#contact">Contact</a></li>
@@ -141,7 +202,7 @@
 
             <!-- Mobile Menu -->
 
-            <button class="menu-toggle" aria-label="Open Menu">
+            <button class="menu-toggle" aria-label="Open Menu" aria-expanded="false" aria-controls="primaryNav">
 
                 <span></span>
 
@@ -221,8 +282,12 @@
 
                     <div class="hero-buttons">
 
+                        <!-- Place your PDF at assets/resume.pdf to activate this button -->
                         <a href="assets/resume.pdf"
-                            class="btn btn-primary">
+                            class="btn btn-primary"
+                            download="Vigneshwaran-Resume.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer">
 
                             Download Resume
 
@@ -239,7 +304,7 @@
 
                     <div class="hero-socials">
 
-                        <a href="https://GitHub.com/vignesh8068"
+                        <a href="https://github.com/vignesh8068"
                            target="_blank"
                            rel="noopener noreferrer"
                             aria-label="GitHub">
@@ -289,7 +354,13 @@
 
                         <div class="avatar-ring ring-three"></div>
 
-                        <img src="assets/images/Profile.png" alt="Profile">
+                        <img
+                            src="assets/images/Profile.png"
+                            alt="Vigneshwaran - AI & Data Science Undergraduate"
+                            width="220"
+                            height="220"
+                            loading="eager"
+                            fetchpriority="high">
 
                     </div>
 
@@ -2045,6 +2116,8 @@
 
                             <li><a href="#projects">Projects</a></li>
 
+                            <li><a href="#certificates">Certificates</a></li>
+
                             <li><a href="#contact">Contact</a></li>
 
                         </ul>
@@ -2093,7 +2166,7 @@
 
                         <div class="social-icons">
 
-                            <a href="https://GitHub.com/vignesh8068" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                            <a href="https://github.com/vignesh8068" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
 
                                 <i class="fab fa-github"></i>
 
