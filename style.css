@@ -272,6 +272,10 @@ p{
 
 .btn{
 
+    position:relative;
+
+    overflow:hidden;
+
     display:inline-flex;
 
     align-items:center;
@@ -287,6 +291,40 @@ p{
     transition:var(--transition);
 
     cursor:pointer;
+
+}
+
+/*=========================================================
+                BUTTON RIPPLE EFFECT
+=========================================================*/
+
+.ripple{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.45);
+
+    transform:scale(0);
+
+    opacity:1;
+
+    pointer-events:none;
+
+    animation:rippleAnim .6s ease-out forwards;
+
+}
+
+@keyframes rippleAnim{
+
+    to{
+
+        transform:scale(2.6);
+
+        opacity:0;
+
+    }
 
 }
 
@@ -548,6 +586,42 @@ body::after{
     width .25s,
     height .25s,
     border-color .25s;
+
+}
+
+/*=========================================================
+                CUSTOM CURSOR - DESKTOP ONLY
+                (prevents a "double cursor" on desktop and
+                stray fixed dots on touch/mobile devices)
+=========================================================*/
+
+@media (hover:hover) and (pointer:fine){
+
+    body{
+
+        cursor:none;
+
+    }
+
+    a,
+    button,
+    .btn{
+
+        cursor:none;
+
+    }
+
+}
+
+@media (hover:none),(pointer:coarse){
+
+    .cursor-dot,
+    .cursor-ring,
+    #mouseGlow{
+
+        display:none;
+
+    }
 
 }
 
@@ -1081,6 +1155,8 @@ body::after{
     var(--secondary));
 
     -webkit-background-clip:text;
+
+    background-clip:text;
 
     color:transparent;
 
@@ -3085,6 +3161,57 @@ drop-shadow(0 0 50px #00e5ff);
     }
 
 }
+/*=========================================================
+                ACCESSIBILITY - REDUCED MOTION
+=========================================================*/
+
+@media (prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+
+        animation-duration:.01ms !important;
+
+        animation-iteration-count:1 !important;
+
+        transition-duration:.01ms !important;
+
+        scroll-behavior:auto !important;
+
+    }
+
+}
+
+/*=========================================================
+                PRINT (for recruiters who print portfolios)
+=========================================================*/
+
+@media print{
+
+    #loader,
+    .cursor-dot,
+    .cursor-ring,
+    #mouseGlow,
+    #scrollProgress,
+    #backToTop,
+    #header,
+    .orb,
+    .hero-grid{
+
+        display:none !important;
+
+    }
+
+    body{
+
+        background:#fff;
+
+        color:#000;
+
+    }
+}
+
 /*=========================================================
                 END OF STYLE.CSS
 =========================================================*/
