@@ -122,11 +122,15 @@ document.addEventListener("mousemove", (event) => {
 
     const y = event.clientY;
 
-    cursorDot.style.left = x + "px";
-    cursorDot.style.top = y + "px";
+    if (cursorDot) {
+        cursorDot.style.left = x + "px";
+        cursorDot.style.top = y + "px";
+    }
 
-    cursorRing.style.left = x + "px";
-    cursorRing.style.top = y + "px";
+    if (cursorRing) {
+        cursorRing.style.left = x + "px";
+        cursorRing.style.top = y + "px";
+    }
 
 });
 
@@ -136,9 +140,11 @@ document.addEventListener("mousemove", (event) => {
 
 document.addEventListener("mousemove", (event) => {
 
-    mouseGlow.style.left = event.clientX + "px";
+    if (mouseGlow) {
+        mouseGlow.style.left = event.clientX + "px";
 
-    mouseGlow.style.top = event.clientY + "px";
+        mouseGlow.style.top = event.clientY + "px";
+    }
 
 });
 
@@ -155,8 +161,10 @@ window.addEventListener("scroll", () => {
     const progress =
         (window.scrollY / totalHeight) * 100;
 
-    scrollProgress.style.width =
-        progress + "%";
+    if (scrollProgress) {
+        scrollProgress.style.width =
+            progress + "%";
+    }
 
 });
 
@@ -166,14 +174,16 @@ window.addEventListener("scroll", () => {
 
 window.addEventListener("scroll", () => {
 
-    if (window.scrollY > 60) {
+    if (navbar) {
+        if (window.scrollY > 60) {
 
-        navbar.classList.add("scrolled");
+            navbar.classList.add("scrolled");
 
-    } else {
+        } else {
 
-        navbar.classList.remove("scrolled");
+            navbar.classList.remove("scrolled");
 
+        }
     }
 
 });
@@ -182,13 +192,15 @@ window.addEventListener("scroll", () => {
                     MOBILE MENU
 =========================================================*/
 
-menuToggle.addEventListener("click", () => {
+if (menuToggle && navLinks) {
+    menuToggle.addEventListener("click", () => {
 
-    navLinks.classList.toggle("active");
+        navLinks.classList.toggle("active");
 
-    menuToggle.classList.toggle("active");
+        menuToggle.classList.toggle("active");
 
-});
+    });
+}
 
 /*=========================================================
                 CLOSE MENU AFTER CLICK
@@ -200,9 +212,8 @@ document
 
     link.addEventListener("click", () => {
 
-        navLinks.classList.remove("active");
-
-        menuToggle.classList.remove("active");
+        if (navLinks) navLinks.classList.remove("active");
+        if (menuToggle) menuToggle.classList.remove("active");
 
     });
 
@@ -213,29 +224,33 @@ document
 
 window.addEventListener("scroll", () => {
 
-    if (window.scrollY > 500) {
+    if (backToTop) {
+        if (window.scrollY > 500) {
 
-        backToTop.classList.add("show");
+            backToTop.classList.add("show");
 
-    } else {
+        } else {
 
-        backToTop.classList.remove("show");
+            backToTop.classList.remove("show");
 
+        }
     }
 
 });
 
-backToTop.addEventListener("click", () => {
+if (backToTop) {
+    backToTop.addEventListener("click", () => {
 
-    window.scrollTo({
+        window.scrollTo({
 
-        top: 0,
+            top: 0,
 
-        behavior: "smooth"
+            behavior: "smooth"
+
+        });
 
     });
-
-});
+}
 
 /*=========================================================
                 ACTIVE NAVIGATION LINK
@@ -439,7 +454,7 @@ cards.forEach(card => {
 
 });
 /*=========================================================
-                CONTACT FORM VALIDATION
+                CONTACT FORM WITH FORMSPREE
 =========================================================*/
 
 const contactForm = document.querySelector(".contact-form");
@@ -450,56 +465,66 @@ if (contactForm) {
 
         event.preventDefault();
 
-        const name =
-            this.querySelector('input[name="name"]');
+        const name = this.querySelector('input[name="name"]');
+        const email = this.querySelector('input[name="email"]');
+        const subject = this.querySelector('input[name="subject"]');
+        const message = this.querySelector('textarea[name="message"]');
+        const submitBtn = this.querySelector('button[type="submit"]');
 
-        const email =
-            this.querySelector('input[name="email"]');
-
-        const subject =
-            this.querySelector('input[name="subject"]');
-
-        const message =
-            this.querySelector('textarea[name="message"]');
-
+        // Validation
         if (
-
+            !name || !email || !subject || !message ||
             name.value.trim() === "" ||
-
             email.value.trim() === "" ||
-
             subject.value.trim() === "" ||
-
             message.value.trim() === ""
-
         ) {
-
-            alert("Please fill in all fields.");
-
+            alert("❌ Please fill in all fields.");
             return;
-
         }
 
-        const emailPattern =
-            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(email.value.trim())) {
-
-            alert("Please enter a valid email address.");
-
+            alert("❌ Please enter a valid email address.");
             email.focus();
-
             return;
-
         }
 
-        alert(
+        // Show loading state
+        if (submitBtn) {
+            submitBtn.textContent = "Sending...";
+            submitBtn.disabled = true;
+        }
 
-            "Thank you! Your message has been validated successfully.\n\nYou can later connect this form to Formspree, EmailJS or your own backend."
-
-        );
-
-        contactForm.reset();
+        // Send via FormSpree - REPLACE YOUR_FORM_ID with your actual form ID from formspree.io
+        const formData = new FormData(this);
+        
+        fetch("https://formspree.io/f/YOUR_FORM_ID", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "Accept": "application/json"
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("✅ Thank you! Your message has been sent successfully.\n\nI'll get back to you soon!");
+                contactForm.reset();
+            } else {
+                alert("❌ There was an error sending your message. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("❌ Network error. Please check your connection and try again.");
+        })
+        .finally(() => {
+            // Reset button state
+            if (submitBtn) {
+                submitBtn.textContent = "Send Message";
+                submitBtn.disabled = false;
+            }
+        });
 
     });
 
