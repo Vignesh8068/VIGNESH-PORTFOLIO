@@ -2970,77 +2970,120 @@ drop-shadow(0 0 50px #00e5ff);
 }
 
 }
-/*=========================================================
-              EXTRA MOBILE FIX
-=========================================================*/
+/* =========================================================
+   FINAL MOBILE HERO FIX
+========================================================= */
 
-@media (max-width: 768px){
+@media screen and (max-width: 768px) {
 
-    .hero{
-        padding-top:40px;
-        padding-bottom:60px;
-        min-height:auto;
-        text-align:center;
+    .hero {
+        min-height: auto !important;
+        height: auto !important;
+        padding: 40px 0 80px !important;
+        display: block !important;
     }
 
-    .hero-container{
-        grid-template-columns:1fr;
-        gap:40px;
-        min-height:auto;
+    .hero-container {
+        width: 92% !important;
+        grid-template-columns: 1fr !important;
+        gap: 25px !important;
+        min-height: auto !important;
     }
 
-    .hero-left{
-        text-align:center;
+    .hero-left {
+        width: 100% !important;
+        text-align: center !important;
     }
 
-    .hero-right{
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        width:100%;
+    .hero-badge {
+        margin-bottom: 20px !important;
     }
 
-    .avatar-wrapper{
-        width:260px;
-        height:260px;
-        margin:auto;
+    .hero h1 {
+        font-size: 2.6rem !important;
+        line-height: 1.1 !important;
     }
 
-    .avatar-wrapper img{
-        width:190px;
-        height:190px;
-        object-fit:cover;
+    .hero h2 {
+        margin-bottom: 20px !important;
     }
 
-    .hero-buttons{
-        justify-content:center;
+    .hero-description {
+        font-size: .95rem !important;
+        margin-bottom: 25px !important;
     }
 
-    .hero-socials{
-        justify-content:center;
+    .hero-buttons {
+        justify-content: center !important;
+        margin-bottom: 25px !important;
+    }
+
+    .hero-socials {
+        justify-content: center !important;
+    }
+
+    .hero-right {
+        width: 100% !important;
+        margin: 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    .avatar-wrapper {
+        width: 240px !important;
+        height: 240px !important;
+    }
+
+    .avatar-circle {
+        width: 210px !important;
+        height: 210px !important;
+    }
+
+    .avatar-wrapper img {
+        width: 190px !important;
+        height: 190px !important;
+    }
+
+    .ring-one {
+        width: 200px !important;
+        height: 200px !important;
+    }
+
+    .ring-two {
+        width: 225px !important;
+        height: 225px !important;
+    }
+
+    .ring-three {
+        width: 250px !important;
+        height: 250px !important;
+    }
+
+    .scroll-indicator {
+        display: none !important;
     }
 }
 
-@media (max-width:480px){
+@media screen and (max-width: 480px) {
 
-    .hero{
-        padding-top:30px;
-        padding-bottom:50px;
+    .hero {
+        padding: 30px 0 60px !important;
     }
 
-    .hero-container{
-        gap:30px;
+    .hero h1 {
+        font-size: 2.35rem !important;
     }
 
-    .avatar-wrapper{
-        width:230px;
-        height:230px;
+    .avatar-wrapper {
+        width: 210px !important;
+        height: 210px !important;
     }
 
-    .avatar-wrapper img{
-        width:170px;
-        height:170px;
+    .avatar-wrapper img {
+        width: 165px !important;
+        height: 165px !important;
     }
+
 }
 /*=========================================================
                 END OF STYLE.CSS
