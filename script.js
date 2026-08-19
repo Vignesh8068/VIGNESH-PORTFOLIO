@@ -499,7 +499,7 @@ if (contactForm) {
         // Send via FormSpree - REPLACE YOUR_FORM_ID with your actual form ID from formspree.io
         const formData = new FormData(this);
         
-        fetch("https://formspree.io/f/meajpboo", {
+        fetch("https://formspree.io/f/xjybpnqk", {
             method: "POST",
             body: formData,
             headers: {
