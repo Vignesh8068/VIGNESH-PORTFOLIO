@@ -116,6 +116,12 @@ typingEffect();
                     CUSTOM CURSOR
 =========================================================*/
 
+/*=========================================================
+                    MOUSE GLOW
+                (combined with cursor tracking above into a
+                single mousemove listener for performance)
+=========================================================*/
+
 document.addEventListener("mousemove", (event) => {
 
     const x = event.clientX;
@@ -132,47 +138,41 @@ document.addEventListener("mousemove", (event) => {
         cursorRing.style.top = y + "px";
     }
 
-});
-
-/*=========================================================
-                    MOUSE GLOW
-=========================================================*/
-
-document.addEventListener("mousemove", (event) => {
-
     if (mouseGlow) {
-        mouseGlow.style.left = event.clientX + "px";
-
-        mouseGlow.style.top = event.clientY + "px";
+        mouseGlow.style.left = x + "px";
+        mouseGlow.style.top = y + "px";
     }
 
-});
+}, { passive: true });
 
 /*=========================================================
                     SCROLL PROGRESS BAR
 =========================================================*/
 
-window.addEventListener("scroll", () => {
+function updateScrollProgress() {
 
     const totalHeight =
         document.documentElement.scrollHeight -
         window.innerHeight;
 
+    // Guard against divide-by-zero on short pages
     const progress =
-        (window.scrollY / totalHeight) * 100;
+        totalHeight > 0
+            ? (window.scrollY / totalHeight) * 100
+            : 0;
 
     if (scrollProgress) {
         scrollProgress.style.width =
             progress + "%";
     }
 
-});
+}
 
 /*=========================================================
                     NAVBAR SCROLL EFFECT
 =========================================================*/
 
-window.addEventListener("scroll", () => {
+function updateNavbarState() {
 
     if (navbar) {
         if (window.scrollY > 60) {
@@ -186,7 +186,7 @@ window.addEventListener("scroll", () => {
         }
     }
 
-});
+}
 
 /*=========================================================
                     MOBILE MENU
@@ -195,9 +195,11 @@ window.addEventListener("scroll", () => {
 if (menuToggle && navLinks) {
     menuToggle.addEventListener("click", () => {
 
-        navLinks.classList.toggle("active");
+        const isOpen = navLinks.classList.toggle("active");
 
         menuToggle.classList.toggle("active");
+
+        menuToggle.setAttribute("aria-expanded", isOpen);
 
     });
 }
@@ -213,7 +215,10 @@ document
     link.addEventListener("click", () => {
 
         if (navLinks) navLinks.classList.remove("active");
-        if (menuToggle) menuToggle.classList.remove("active");
+        if (menuToggle) {
+            menuToggle.classList.remove("active");
+            menuToggle.setAttribute("aria-expanded", "false");
+        }
 
     });
 
@@ -222,7 +227,7 @@ document
                 BACK TO TOP BUTTON
 =========================================================*/
 
-window.addEventListener("scroll", () => {
+function updateBackToTop() {
 
     if (backToTop) {
         if (window.scrollY > 500) {
@@ -236,7 +241,7 @@ window.addEventListener("scroll", () => {
         }
     }
 
-});
+}
 
 if (backToTop) {
     backToTop.addEventListener("click", () => {
@@ -260,7 +265,7 @@ const sections = document.querySelectorAll("section");
 
 const navItems = document.querySelectorAll(".nav-links a");
 
-window.addEventListener("scroll", () => {
+function updateActiveNavLink() {
 
     let currentSection = "";
 
@@ -297,7 +302,42 @@ window.addEventListener("scroll", () => {
 
     });
 
-});
+}
+
+/*=========================================================
+                CONSOLIDATED SCROLL HANDLER
+                (single rAF-throttled listener instead of
+                four separate scroll listeners, for smoother
+                performance especially on mobile devices)
+=========================================================*/
+
+let scrollTicking = false;
+
+function onScrollFrame() {
+
+    updateScrollProgress();
+    updateNavbarState();
+    updateBackToTop();
+    updateActiveNavLink();
+
+    scrollTicking = false;
+
+}
+
+window.addEventListener("scroll", () => {
+
+    if (!scrollTicking) {
+
+        requestAnimationFrame(onScrollFrame);
+        scrollTicking = true;
+
+    }
+
+}, { passive: true });
+
+// Run once on load so the UI is correct even if the user
+// refreshes mid-page (e.g. lands on a mid-page anchor link)
+onScrollFrame();
 
 /*=========================================================
                 SCROLL REVEAL
@@ -499,7 +539,7 @@ if (contactForm) {
         // Send via FormSpree - REPLACE YOUR_FORM_ID with your actual form ID from formspree.io
         const formData = new FormData(this);
         
-        fetch("https://formspree.io/f/xjybpnqk", {
+        fetch("https://formspree.io/f/meajpboo", {
             method: "POST",
             body: formData,
             headers: {
@@ -626,17 +666,25 @@ buttons.forEach(button => {
 
         circle.classList.add("ripple");
 
-        const ripple =
+        const oldRipple =
 
             this.querySelector(".ripple");
 
-        if (ripple) {
+        if (oldRipple) {
 
-            ripple.remove();
+            oldRipple.remove();
 
         }
 
         this.appendChild(circle);
+
+        // Remove the ripple once its animation finishes
+        // instead of waiting for the next click
+        circle.addEventListener("animationend", () => {
+
+            circle.remove();
+
+        });
 
     });
 
