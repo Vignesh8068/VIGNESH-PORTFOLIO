@@ -30,17 +30,34 @@ const typingElement = document.getElementById("typingText");
 
 /*=========================================================
                     LOADER
+                (uses DOMContentLoaded instead of window
+                "load" — DOMContentLoaded fires as soon as
+                the page itself is ready, without waiting on
+                slow/blocked third-party fonts or icon CDNs.
+                A hard safety timeout also guarantees the
+                splash screen can never get stuck on screen,
+                even in the worst network conditions.)
 =========================================================*/
 
-window.addEventListener("load", () => {
+function hideLoader() {
 
-    setTimeout(() => {
+    if (loader && !loader.classList.contains("hidden")) {
 
         loader.classList.add("hidden");
 
-    }, 1800);
+    }
+
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    setTimeout(hideLoader, 1200);
 
 });
+
+// Absolute safety net: never let the loader stay up more
+// than 4 seconds, no matter what else is happening.
+setTimeout(hideLoader, 4000);
 
 /*=========================================================
                     TYPING ANIMATION
@@ -67,6 +84,17 @@ let charIndex = 0;
 let deleting = false;
 
 function typingEffect() {
+
+    // If the tab is backgrounded (screen locked, app switched),
+    // wait instead of letting the browser's throttled timer
+    // leave a half-typed word frozen on screen for a long time.
+    if (document.hidden) {
+
+        setTimeout(typingEffect, 300);
+
+        return;
+
+    }
 
     const currentWord = typingWords[wordIndex];
 
@@ -610,15 +638,26 @@ window.addEventListener("mousemove", (event) => {
 
     if (!avatar) return;
 
+    // Skip on touch devices — there's no persistent mouse
+    // position to tilt toward, so this is desktop-only polish.
+    if (window.matchMedia("(hover:none)").matches) return;
+
     const x =
         (event.clientX / window.innerWidth - 0.5) * 18;
 
     const y =
         (event.clientY / window.innerHeight - 0.5) * 18;
 
+    // Real 3D tilt: rotate toward the cursor on both axes,
+    // combined with the existing horizontal/vertical drift.
+    const rotateY = x * 1.1;
+    const rotateX = -y * 1.1;
+
     avatar.style.transform =
 
-        `translate(${x}px, ${y}px)`;
+        `translate3d(${x}px, ${y}px, 0)
+         rotateY(${rotateY}deg)
+         rotateX(${rotateX}deg)`;
 
 });
 
