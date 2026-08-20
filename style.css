@@ -1,8 +1,9 @@
 /*=========================================================
                 GOOGLE FONT
+                (loaded via <link> in index.html's <head> —
+                not here, since @import is render-blocking
+                and would fetch the same font a second time)
 =========================================================*/
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap');
 
 /*=========================================================
                 CSS VARIABLES
@@ -51,6 +52,20 @@
 html{
 
     scroll-behavior:smooth;
+
+}
+
+/*=========================================================
+                ANCHOR SCROLL OFFSET
+                (without this, every nav-link jump lands the
+                section title directly behind the fixed navbar
+                — this pushes the scroll stop point down so
+                headings always land clear of it)
+=========================================================*/
+
+section[id]{
+
+    scroll-margin-top:110px;
 
 }
 
@@ -461,6 +476,8 @@ body::after{
     opacity:0;
 
     visibility:hidden;
+
+    pointer-events:none;
 
 }
 
@@ -1137,9 +1154,13 @@ body::after{
 
 .hero h1{
 
+    font-size:clamp(2.4rem,4.2vw + 1rem,3.6rem);
+
+    line-height:1.15;
+
     margin-bottom:18px;
 
-    max-width:700px;
+    max-width:660px;
 
 }
 
@@ -1166,11 +1187,63 @@ body::after{
 
     min-height:50px;
 
+    display:flex;
+
+    align-items:center;
+
     color:var(--secondary);
 
     font-size:1.45rem;
 
     margin-bottom:28px;
+
+}
+
+/*=========================================================
+                        TYPING CURSOR
+                (a visible blinking bar so a mid-word
+                animation frame reads as "typing", not broken)
+=========================================================*/
+
+.typing-cursor{
+
+    display:inline-block;
+
+    width:3px;
+
+    height:1.1em;
+
+    margin-left:4px;
+
+    background:var(--secondary);
+
+    animation:blinkCursor .85s step-end infinite;
+
+}
+
+@keyframes blinkCursor{
+
+    0%,100%{
+
+        opacity:1;
+
+    }
+
+    50%{
+
+        opacity:0;
+
+    }
+
+}
+
+@media (prefers-reduced-motion:reduce){
+
+    .typing-cursor{
+
+        animation:none;
+
+    }
 
 }
 
@@ -1266,6 +1339,8 @@ body::after{
 
     position:relative;
 
+    perspective:1000px;
+
 }
 
 .avatar-wrapper{
@@ -1281,6 +1356,10 @@ body::after{
     justify-content:center;
 
     align-items:center;
+
+    transform-style:preserve-3d;
+
+    transition:transform .12s ease-out;
 
 }
 
@@ -1338,6 +1417,8 @@ opacity:1;
         drop-shadow(0 0 50px #00e5ff)
         drop-shadow(0 0 90px #3b82f6);
 
+    transform:translateZ(40px);
+
     animation:
         floating 5s ease-in-out infinite,
         brainPulse 3s ease-in-out infinite;
@@ -1372,7 +1453,9 @@ opacity:1;
 
     height:410px;
 
-    animation:rotateAnti 25s linear infinite;
+    transform:rotateX(68deg) rotateZ(0deg);
+
+    animation:orbitRing3D 14s linear infinite;
 
 }
 
@@ -1390,13 +1473,13 @@ opacity:1;
 
     0%,100%{
 
-        transform:translateY(0);
+        transform:translateY(0) translateZ(40px);
 
     }
 
     50%{
 
-        transform:translateY(-18px);
+        transform:translateY(-18px) translateZ(40px);
 
     }
 
@@ -1429,6 +1512,22 @@ opacity:1;
     to{
 
         transform:rotate(0deg);
+
+    }
+
+}
+
+@keyframes orbitRing3D{
+
+    from{
+
+        transform:rotateX(68deg) rotateZ(0deg);
+
+    }
+
+    to{
+
+        transform:rotateX(68deg) rotateZ(360deg);
 
     }
 
