@@ -220,8 +220,26 @@ function updateNavbarState() {
                     MOBILE MENU
 =========================================================*/
 
+function closeMobileMenu() {
+
+    if (navLinks && navLinks.classList.contains("active")) {
+        navLinks.classList.remove("active");
+    }
+
+    if (menuToggle && menuToggle.classList.contains("active")) {
+        menuToggle.classList.remove("active");
+        menuToggle.setAttribute("aria-expanded", "false");
+    }
+
+    document.body.classList.remove("menu-open");
+
+}
+
 if (menuToggle && navLinks) {
-    menuToggle.addEventListener("click", () => {
+
+    menuToggle.addEventListener("click", (event) => {
+
+        event.stopPropagation();
 
         const isOpen = navLinks.classList.toggle("active");
 
@@ -229,11 +247,14 @@ if (menuToggle && navLinks) {
 
         menuToggle.setAttribute("aria-expanded", isOpen);
 
+        document.body.classList.toggle("menu-open", isOpen);
+
     });
+
 }
 
 /*=========================================================
-                CLOSE MENU AFTER CLICK
+                CLOSE MENU AFTER CLICK / OUTSIDE / ESCAPE
 =========================================================*/
 
 document
@@ -242,13 +263,49 @@ document
 
     link.addEventListener("click", () => {
 
-        if (navLinks) navLinks.classList.remove("active");
-        if (menuToggle) {
-            menuToggle.classList.remove("active");
-            menuToggle.setAttribute("aria-expanded", "false");
-        }
+        closeMobileMenu();
 
     });
+
+});
+
+document.addEventListener("click", (event) => {
+
+    if (navLinks && navLinks.classList.contains("active")) {
+
+        if (!navLinks.contains(event.target) && !menuToggle.contains(event.target)) {
+
+            closeMobileMenu();
+
+        }
+
+    }
+
+});
+
+document.addEventListener("keydown", (event) => {
+
+    if (event.key === "Escape" && navLinks && navLinks.classList.contains("active")) {
+
+        closeMobileMenu();
+
+        if (menuToggle) {
+
+            menuToggle.focus();
+
+        }
+
+    }
+
+});
+
+window.addEventListener("resize", () => {
+
+    if (window.innerWidth > 768) {
+
+        closeMobileMenu();
+
+    }
 
 });
 /*=========================================================
